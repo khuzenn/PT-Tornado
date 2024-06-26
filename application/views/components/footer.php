@@ -251,6 +251,6 @@
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="<?= base_url("assets/kaiadmin") ?>/assets/js/setting-demo.js"></script>
-    <script src="<?= base_url("assets/kaiadmin") ?>/assets/js/demo.js"></script>
+    <!-- <script src="<?= base_url("assets/kaiadmin") ?>/assets/js/demo.js"></script> -->
   </body>
 </html>

@@ -30,4 +30,114 @@ class Dashboard_model extends CI_Model
         $this->db->from('tb_pesanan');
         return $this->db->count_all_results();
     }
+
+    public function getMonthlySales() {
+        $query = $this->db->query("
+            SELECT 
+                DATE_FORMAT(order_date, '%b') as month, 
+                SUM(sell_price_total) as total_sales 
+            FROM view_pesanan 
+            GROUP BY month 
+            ORDER BY MONTH(order_date)
+        ");
+    
+        $result = $query->result();
+    
+        $months = [
+            'Jan' => 0, 'Feb' => 0, 'Mar' => 0, 'Apr' => 0, 'May' => 0, 'Jun' => 0,
+            'Jul' => 0, 'Aug' => 0, 'Sep' => 0, 'Oct' => 0, 'Nov' => 0, 'Dec' => 0
+        ];
+    
+        foreach ($result as $row) {
+            $months[$row->month] = $row->total_sales;
+        }
+    
+        $labels = array_keys($months);
+        $data = array_values($months);
+    
+        return ['labels' => $labels, 'data' => $data];
+    }    
+
+    public function getMonthlyHutang() {
+        $query = $this->db->query("
+            SELECT 
+                DATE_FORMAT(tanggal_pembelian, '%b') as month, 
+                SUM(harga_barang) as total_unpaid 
+            FROM tb_pembelian
+            WHERE status NOT IN ('paid')
+            GROUP BY DATE_FORMAT(tanggal_pembelian, '%b') 
+            ORDER BY MONTH(tanggal_pembelian)
+        ");
+    
+        $result = $query->result();
+    
+        $months = [
+            'Jan' => 0, 'Feb' => 0, 'Mar' => 0, 'Apr' => 0, 'May' => 0, 'Jun' => 0,
+            'Jul' => 0, 'Aug' => 0, 'Sep' => 0, 'Oct' => 0, 'Nov' => 0, 'Dec' => 0
+        ];
+    
+        foreach ($result as $row) {
+            $months[$row->month] = $row->total_unpaid;
+        }
+    
+        $labels = array_keys($months);
+        $data = array_values($months);
+    
+        return ['labels' => $labels, 'data' => $data];
+    }    
+
+    public function getMonthlyPiutang() {
+        $query = $this->db->query("
+            SELECT 
+                DATE_FORMAT(order_date, '%b') as month, 
+                SUM(paid) as total_paid 
+            FROM view_pesanan 
+            GROUP BY month 
+            ORDER BY MONTH(order_date)
+        ");
+    
+        $result = $query->result();
+    
+        $months = [
+            'Jan' => 0, 'Feb' => 0, 'Mar' => 0, 'Apr' => 0, 'May' => 0, 'Jun' => 0,
+            'Jul' => 0, 'Aug' => 0, 'Sep' => 0, 'Oct' => 0, 'Nov' => 0, 'Dec' => 0
+        ];
+    
+        foreach ($result as $row) {
+            $months[$row->month] = $row->total_paid;
+        }
+    
+        $labels = array_keys($months);
+        $data = array_values($months);
+    
+        return ['labels' => $labels, 'data' => $data];
+    }
+
+    public function getMonthlyPesanan() {
+        $query = $this->db->query("
+            SELECT 
+                DATE_FORMAT(order_date, '%b') as month, 
+                COUNT(*) as total_orders
+            FROM view_pesanan 
+            GROUP BY month 
+            ORDER BY MONTH(order_date)
+        ");
+    
+        $result = $query->result();
+    
+        $months = [
+            'Jan' => 0, 'Feb' => 0, 'Mar' => 0, 'Apr' => 0, 'May' => 0, 'Jun' => 0,
+            'Jul' => 0, 'Aug' => 0, 'Sep' => 0, 'Oct' => 0, 'Nov' => 0, 'Dec' => 0
+        ];
+
+        foreach ($result as $row) {
+            $months[$row->month] = $row->total_orders;
+        }
+    
+        $labels = array_keys($months);
+        $data = array_values($months);
+    
+        return ['labels' => $labels, 'data' => $data];
+    }
+    
 }

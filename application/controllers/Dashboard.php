@@ -57,6 +57,11 @@ class Dashboard extends CI_Controller
 		$this->data['hutang'] = $this->Dashboard_model->getAllHutang();
 		$this->data['total_pesanan'] = $this->Dashboard_model->getAllPesanan();
 
+		$this->data['chart_total_pesanan'] = $this->Dashboard_model->getMonthlySales();
+		$this->data['chart_total_hutang'] = $this->Dashboard_model->getMonthlyHutang();
+		$this->data['chart_total_piutang'] = $this->Dashboard_model->getMonthlyPiutang();
+		$this->data['chart_jumlah_pesanan'] = $this->Dashboard_model->getMonthlyPesanan();
+
 		$this->data['title'] = 'Dashboard';
 
 		$this->data['breadcrumbs'] = [];
@@ -72,6 +77,6 @@ class Dashboard extends CI_Controller
 		$this->load->view('components/sidebar', $this->data);
 		$this->load->view('components/navbar', $this->data);
 		$this->load->view('welcome_message', $this->data);
-		$this->load->view('components/footer');
+		$this->load->view('components/footer', $this->data);
 	}
 }
