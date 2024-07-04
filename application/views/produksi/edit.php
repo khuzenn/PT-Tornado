@@ -55,7 +55,21 @@
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
-                                    <span style="color: red;"><?= form_error('pegawai'); ?></span>
+                                    <span style="color: red;"><?= form_error('Pegawai'); ?></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="name">Pelanggan</label>
+                                <div class="col-sm-10">
+                                    <select name="name" id="name" class="form-select form-control" data-placeholder="Pilih Pelanggan . . .">
+                                        <option value="">Pilih Pelanggan</option>
+                                        <?php foreach ($list_pelanggan as $pelanggan): ?>
+                                            <option value="<?= encrypt_url($pelanggan->id_pelanggan); ?>" <?= ($pelanggan->id_pelanggan == $selected_pelanggan) ? 'selected' : ''; ?>>
+                                                <?= $pelanggan->name; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <span style="color: red;"><?= form_error('Pelanggan'); ?></span>
                                 </div>
                             </div>
                             <div class="row mb-3">

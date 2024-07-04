@@ -61,7 +61,7 @@
                                 <a class="dropdown-item" href="<?= site_url('Produk/update/' . $produk->id_produk); ?>"
                                     ><i class="bx bx-edit-alt me-1"></i> Edit</a
                                 >
-                                <a class="dropdown-item" href="<?= site_url('Produk/delete/' . $produk->id_produk); ?>"
+                                <a class="dropdown-item" href="<?= site_url('Produk/delete/' . $produk->id_produk); ?>" onclick="return confirm('Are You Sure Want to Delete This Data?')"
                                     ><i class="bx bx-trash-alt me-1"></i> Hapus</a
                                 >
                             </div>

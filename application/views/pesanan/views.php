@@ -22,7 +22,7 @@
           <div class="card-header d-flex justify-content-between">
             <div class="card-title">Daftar Pesanan</div>
             <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
-              <div>
+              <div class="col-12 col-sm-auto d-flex justify-content-end">
                 <a href="#" onclick="exportToExcel('kt-tabel', 'Daftar Pesanan')">
                     <button class="btn btn-outline-primary btn-round justify-content-center" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                         <i class="fas fa-file-export me-sm-1 pb-1"></i>
@@ -30,16 +30,15 @@
                     </button>
                 </a>
               </div>
-              <div>
+              <div class="col-12 col-sm-auto">
                 <input type="date" id="min" class="form-control">
               </div>
-              <div>
-                <p class="pt-2">To :</p>
+              <div class="col-12 col-sm-auto">
+                <p class="text-center mb-0">To :</p>
               </div>
-              <div>
+              <div class="col-12 col-sm-auto">
                 <input type="date" id="max" class="form-control">
               </div>
-
             </div>
           </div>
           <div class="card-body">
@@ -54,6 +53,7 @@
                     <th class="text-center">Jumlah</th>
                     <th class="text-center">Sudah Dibayar</th>
                     <th class="text-center">Belum Dibayar</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Aksi</th>
                   </tr>
                 </thead>
@@ -71,6 +71,17 @@
                     <td class="text-center"><?= rupiah($pesanan->paid); ?></td>
                     <td class="text-center"><?= rupiah($pesanan->unpaid); ?></td>
                     <td class="text-center">
+                      <?php 
+                      if ($pesanan->status == 'Paid') {
+                          echo '<span class="badge badge-success">Paid</span>';
+                      } elseif ($pesanan->status == 'Term') {
+                          echo '<span class="badge badge-warning">Term</span>';
+                      } elseif ($pesanan->status == 'Unpaid') {
+                          echo '<span class="badge badge-danger">Unpaid</span>';
+                      }
+                      ?>
+                    </td>
+                    <td class="text-center">
                     <div class="dropdown">
                       <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                       <i class="bx bx-dots-vertical-rounded"></i>
@@ -82,7 +93,7 @@
                           <a class="dropdown-item" href="<?= site_url('Pesanan/update/' . $pesanan->pesanan_id); ?>"
                               ><i class="bx bx-edit-alt me-1"></i> Edit</a
                           >
-                          <a class="dropdown-item" href="<?= site_url('Pesanan/delete/' . $pesanan->pesanan_id); ?>"
+                          <a class="dropdown-item" href="<?= site_url('Pesanan/delete/' . $pesanan->pesanan_id); ?>" onclick="return confirm('Are You Sure Want to Delete This Data?')"
                               ><i class="bx bx-trash-alt me-1"></i> Hapus</a
                           >
                       </div>
@@ -99,10 +110,11 @@
                       <th class="text-center" colspan="1"><b>Total</b></th>
                       <th class="text-center"></th>
                       <th class="text-center"></th>
+                      <th class="text-center"></th>
+                      <th class="text-center"></th>
                       <th class="text-center" id="formattedColumn4"></th>
                       <th class="text-center" id="total_pesanan"></th>
                       <th class="text-center" id="formattedColumn6"></th>
-                      <th class="text-center"></th>
                       <th class="text-center"></th>
                     </tr>
                   </tfoot>

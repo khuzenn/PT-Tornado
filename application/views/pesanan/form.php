@@ -29,6 +29,12 @@
                         <div class="card-title">Tambah Pesanan</div>
                     </div>
                     <div class="card-body">
+                        <?php if ($this->session->flashdata('message')): ?>
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <?= $this->session->flashdata('message'); ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
                         <form class="form-horizontal" role="form" action="<?= $action; ?>" method="POST">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="name">Nama Pelanggan</label>
@@ -59,17 +65,17 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="quantity">Jumlah</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Masukkan Jumlah Pesanan . . ." autocomplete="off">
-                                    <span style="color: red;"><?= form_error('quantity'); ?></span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="sell_price">Harga</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="sell_price" name="sell_price" placeholder="Masukkan Harga . . ." autocomplete="off">
                                     <span style="color: red;"><?= form_error('sell_price'); ?></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="quantity">Jumlah</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Masukkan Jumlah Pesanan . . ." autocomplete="off">
+                                    <span style="color: red;"><?= form_error('quantity'); ?></span>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -141,4 +147,30 @@
         document.getElementById('sell_price_total').disabled = false;
         return true; // Pastikan formulir dapat diserahkan
     }
+</script>
+
+<!-- Get Harga By Produk -->
+<script src="<?= base_url("assets/kaiadmin") ?>/assets/js/core/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#produk').change(function() {
+            var id_produk = $(this).val();
+            if (id_produk) {
+                $.ajax({
+                    url: "<?= site_url('Pesanan/get_harga'); ?>",
+                    type: "POST",
+                    data: {id_produk: id_produk},
+                    dataType: "json",
+                    success: function(data) {
+                        $('#sell_price').val(data.harga);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+            } else {
+                $('#sell_price').val('');
+            }
+        });
+    });
 </script>

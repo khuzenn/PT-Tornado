@@ -49,7 +49,7 @@
                               <a class="dropdown-item" href="<?= site_url('Kategori_Produk/update/' . $kategori->id_kategori_produk); ?>"
                                   ><i class="bx bx-edit-alt me-1"></i> Edit</a
                               >
-                              <a class="dropdown-item" href="<?= site_url('Kategori_Produk/delete/' . $kategori->id_kategori_produk); ?>"
+                              <a class="dropdown-item" href="<?= site_url('Kategori_Produk/delete/' . $kategori->id_kategori_produk); ?>" onclick="return confirm('Are You Sure Want to Delete This Data?')"
                                   ><i class="bx bx-trash-alt me-1"></i> Hapus</a
                               >
                           </div>

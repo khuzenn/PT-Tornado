@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2024 at 07:29 PM
+-- Generation Time: Jul 03, 2024 at 07:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -79,19 +79,23 @@ CREATE TABLE `menu` (
 INSERT INTO `menu` (`id_menu`, `id_menu_parent`, `nama_menu`, `icon`, `kategori`, `href`, `status`, `sort`) VALUES
 (2, 7, 'Pengaturan Pengguna', 'fas fa-users-cog', 'Controller', 'Usersmanagement', 'Y', '1'),
 (3, 7, 'Pengaturan Hak Akses', 'fas fa-universal-access', 'Controller', 'Roles', 'Y', '1'),
-(6, 7, 'Pengaturan Menu', 'fas fa-list', 'Controller', 'Menu', 'Y', '2'),
-(7, 0, 'Pengaturan', 'fas fa-cog', 'Controller', '', 'Y', '2'),
-(8, 7, 'Pengaturan Modul', 'fab fa-buromobelexperte', 'Controller', 'Permission', 'Y', '3'),
+(6, 7, 'Pengaturan Menu', 'fas fa-list-alt', 'Controller', 'Menu', 'Y', '2'),
+(7, 0, 'Pengaturan', 'fas fa-cog', 'Controller', '', 'Y', '8'),
+(8, 7, 'Pengaturan Modul', ' fas fa-columns', 'Controller', 'Permission', 'Y', '3'),
 (9, 0, 'Dashboard', 'fas fa-home', 'Controller', 'Dashboard', 'Y', '1'),
 (37, 0, 'Pengguna Web', 'fas fa-user', 'Controller', '', 'Y', '1'),
-(39, 0, 'Pegawai', 'fas fa-user-friends', 'Controller', 'Pegawai', 'Y', '1'),
-(40, 0, 'Pelanggan', '\nfas fa-address-book', 'Controller', 'Pelanggan', 'Y', '1'),
-(41, 0, 'Pesanan', 'fas fa-shopping-cart', 'Controller', 'Pesanan', 'Y', '1'),
-(42, 0, 'Produksi', 'fas fa-hourglass-end', 'Controller', 'Produksi', 'Y', '1'),
-(43, 0, 'Pembelian', '\nfas fa-shopping-bag', 'Controller', 'Pembelian', 'Y', '1'),
-(44, 0, 'Kelola Produk', 'fas fa-box', 'Controller', '', 'Y', '1'),
+(39, 0, 'Pegawai', 'fas fa-user-friends', 'Controller', 'Pegawai', 'Y', '2'),
+(40, 0, 'Pelanggan', 'fas fa-address-book', 'Controller', 'Pelanggan', 'Y', '3'),
+(41, 0, 'Pesanan', 'fas fa-shopping-cart', 'Controller', 'Pesanan', 'Y', '4'),
+(42, 0, 'Produksi', 'fas fa-hourglass-end', 'Controller', 'Produksi', 'Y', '5'),
+(43, 0, 'Pembelian', 'fas fa-shopping-bag', 'Controller', 'Pembelian', 'Y', '5'),
+(44, 0, 'Kelola Produk', 'fas fa-box', 'Controller', '', 'Y', '6'),
 (45, 44, 'Produk', 'fas fa-box-open', 'Controller', 'Produk', 'Y', '1'),
-(46, 44, 'Kategori Produk', 'fas fa-boxes', 'Controller', 'Kategori_Produk', 'Y', '2');
+(46, 44, 'Kategori Produk', 'fas fa-boxes', 'Controller', 'Kategori_Produk', 'Y', '2'),
+(48, 50, 'Riwayat Produk', 'fas fa-history', 'Controller', 'Riwayat_Produk', 'Y', '3'),
+(49, 50, 'Stok Gudang', 'fas fa-cube', 'Controller', 'Stok_Gudang', 'Y', '2'),
+(50, 0, 'Stok Produk', 'fas fa-cubes', 'Controller', '', 'Y', '7'),
+(51, 50, 'Stok Produksi', 'fas fa-cubes', 'Controller', 'Stok_Produksi', 'Y', '1');
 
 -- --------------------------------------------------------
 
@@ -135,7 +139,10 @@ INSERT INTO `permissions` (`permission_id`, `permission`, `description`, `parent
 (10, 'Produksi', 'Produksi', NULL, NULL),
 (11, 'Pembelian', 'Pembelian', NULL, NULL),
 (12, 'Produk', 'Produk', NULL, NULL),
-(13, 'Kategori_Produk', 'Kategori Produk', NULL, NULL);
+(13, 'Kategori_Produk', 'Kategori Produk', NULL, NULL),
+(15, 'Riwayat_Produk', 'Riwayat_Produk', NULL, NULL),
+(16, 'Stok_Gudang', 'Stok_Gudang', NULL, NULL),
+(17, 'Stok_Produksi', 'Stok_Produksi', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -159,7 +166,7 @@ INSERT INTO `roles` (`role_id`, `role`, `full`, `default`) VALUES
 (2, 'User', 'User', 1),
 (3, 'Sup Admin', 'Super Admin', 0),
 (4, 'Koor Produksi', 'Koor Produksi', 0),
-(6, 'Koor Pesanan 1', 'Kordinator Pesanan 1', 0);
+(5, 'Koor Produksi 2', 'Koor Produksi 2', 0);
 
 -- --------------------------------------------------------
 
@@ -194,6 +201,9 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`) VALUES
 (1, 11),
 (1, 12),
 (1, 13),
+(4, 6),
+(4, 10),
+(5, 10),
 (3, 2),
 (3, 3),
 (3, 4),
@@ -206,16 +216,9 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`) VALUES
 (3, 11),
 (3, 12),
 (3, 13),
-(3, 14),
-(5, 10),
-(6, 6),
-(6, 9),
-(6, 12),
-(6, 13),
-(4, 6),
-(4, 10),
-(4, 12),
-(4, 13);
+(3, 15),
+(3, 16),
+(3, 17);
 
 -- --------------------------------------------------------
 
@@ -235,7 +238,7 @@ CREATE TABLE `tb_kategori_produk` (
 --
 
 INSERT INTO `tb_kategori_produk` (`id_kategori_produk`, `kategori_produk`, `created_at`, `update_at`) VALUES
-(1, 'Sedotan', '2024-02-20 21:06:48', '2024-06-25 20:53:41'),
+(1, 'Sedotan', '2024-02-20 21:06:48', '2024-02-20 21:06:48'),
 (2, 'Paper Cup', '2024-02-20 21:06:57', '2024-02-20 21:06:57'),
 (3, 'Papper Bowl', '2024-02-20 21:07:10', '2024-02-20 21:07:10'),
 (4, 'Megah Prima', '2024-02-20 21:07:21', '2024-02-20 21:07:21'),
@@ -313,7 +316,8 @@ CREATE TABLE `tb_pesanan` (
 --
 
 INSERT INTO `tb_pesanan` (`id`, `id_pelanggan`, `id_produk`, `quantity`, `sell_price`, `sell_price_total`, `note`, `paid`, `unpaid`, `order_date`, `status`) VALUES
-(1, 1, 1, 7000, 400, 2800000, 'Pesanan Pertama', 2800000, 0, '2024-06-25', 'Paid');
+(5, 1, 1, 2000, 400, 800000, 'tes', 400000, 400000, '2024-07-02', 'Term'),
+(6, 1, 1, 500, 400, 200000, 'tes', 100000, 100000, '2024-07-03', 'Term');
 
 -- --------------------------------------------------------
 
@@ -335,8 +339,8 @@ CREATE TABLE `tb_produk` (
 --
 
 INSERT INTO `tb_produk` (`id_produk`, `id_kategori_produk`, `produk`, `harga`, `created_at`, `update_at`) VALUES
-(1, 7, '12 Benxon Ao', '400', '2024-02-20 21:27:00', '2024-02-20 21:32:17'),
-(2, 6, '12 Inject Buram NJI', '410', '2024-02-20 21:32:59', '2024-02-20 21:34:41'),
+(1, 7, '12 Benxon Ao', '400', '2024-02-20 21:27:00', '2024-07-02 10:22:21'),
+(2, 6, '12 Inject Buram NJI', '410', '2024-02-20 21:32:59', '2024-07-02 10:21:17'),
 (3, 6, '12 Inject Datar (NJI)', '420', '2024-02-20 21:33:23', '2024-02-20 21:34:55'),
 (4, 7, '12 Oz Benxon', '430', '2024-02-20 21:34:01', '2024-02-20 21:34:01'),
 (5, 6, '12 Inject Datar Jakarta', '440', '2024-02-20 21:35:42', '2024-02-20 21:35:42'),
@@ -356,8 +360,9 @@ INSERT INTO `tb_produk` (`id_produk`, `id_kategori_produk`, `produk`, `harga`, `
 
 CREATE TABLE `tb_produksi` (
   `id_produksi` int(11) NOT NULL,
-  `id_produk` int(128) NOT NULL,
-  `id_pegawai` int(128) NOT NULL,
+  `id_produk` int(11) NOT NULL,
+  `id_pegawai` int(11) NOT NULL,
+  `id_pelanggan` int(11) NOT NULL,
   `status_pengiriman` enum('Sudah Dikirim','Belum Dikirim') NOT NULL,
   `target_produksi` int(128) NOT NULL,
   `barang_ditaro` int(128) NOT NULL,
@@ -365,7 +370,6 @@ CREATE TABLE `tb_produksi` (
   `packing` int(128) NOT NULL,
   `reject` int(128) NOT NULL,
   `status` enum('Stok','Kirim') NOT NULL,
-  `modified_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
   `production_at` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -373,8 +377,75 @@ CREATE TABLE `tb_produksi` (
 -- Dumping data for table `tb_produksi`
 --
 
-INSERT INTO `tb_produksi` (`id_produksi`, `id_produk`, `id_pegawai`, `status_pengiriman`, `target_produksi`, `barang_ditaro`, `penyok`, `packing`, `reject`, `status`, `modified_at`, `production_at`) VALUES
-(1, 1, 3, 'Sudah Dikirim', 4000, 4000, 200, 3800, 0, 'Kirim', '0000-00-00 00:00:00', '2024-06-25');
+INSERT INTO `tb_produksi` (`id_produksi`, `id_produk`, `id_pegawai`, `id_pelanggan`, `status_pengiriman`, `target_produksi`, `barang_ditaro`, `penyok`, `packing`, `reject`, `status`, `production_at`) VALUES
+(1, 1, 1, 1, 'Sudah Dikirim', 2500, 2000, 100, 1500, 400, 'Kirim', '2024-07-03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_produk_history`
+--
+
+CREATE TABLE `tb_produk_history` (
+  `id_history` int(11) NOT NULL,
+  `id_produk` int(11) NOT NULL,
+  `change_type` varchar(50) NOT NULL,
+  `quantity_change` int(11) NOT NULL,
+  `previous_stock` int(11) NOT NULL,
+  `new_stock` int(11) NOT NULL,
+  `change_timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_produk_history`
+--
+
+INSERT INTO `tb_produk_history` (`id_history`, `id_produk`, `change_type`, `quantity_change`, `previous_stock`, `new_stock`, `change_timestamp`) VALUES
+(1, 1, 'Stok Gudang', 2000, 0, 2000, '2024-07-03 11:02:09'),
+(2, 1, 'Stok Gudang', 2000, 2000, 0, '2024-07-03 11:10:21'),
+(3, 1, 'Stok Gudang', 500, 0, 500, '2024-07-03 11:13:56'),
+(4, 5, 'Stok Gudang', 200, 0, 200, '2024-07-03 11:36:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_stok_gudang`
+--
+
+CREATE TABLE `tb_stok_gudang` (
+  `id_stok_gudang` int(11) NOT NULL,
+  `produk_id` int(11) NOT NULL,
+  `stok` int(128) NOT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_stok_gudang`
+--
+
+INSERT INTO `tb_stok_gudang` (`id_stok_gudang`, `produk_id`, `stok`, `created_at`) VALUES
+(1, 1, 500, '2024-07-03'),
+(2, 5, 200, '2024-07-03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_stok_produksi`
+--
+
+CREATE TABLE `tb_stok_produksi` (
+  `id_stok_produksi` int(11) NOT NULL,
+  `produk_id` int(11) NOT NULL,
+  `stok` int(128) NOT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_stok_produksi`
+--
+
+INSERT INTO `tb_stok_produksi` (`id_stok_produksi`, `produk_id`, `stok`, `created_at`) VALUES
+(1, 1, 1500, '2024-07-03');
 
 -- --------------------------------------------------------
 
@@ -408,10 +479,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `approved`, `meta`, `last_ip`, `last_login`, `created`, `modified`) VALUES
 (1, 'admin', '$2a$10$gtANPNMiG2UEL9fPbbJaBOKY1juVGP8PhYCKJWuV6yYIuz29qJF7W', 'm.jundi@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"62c4714b325a0\";s:4:\"name\";s:11:\"Raihan Arif\";}', '::1', '2024-02-25 08:16:53', '2022-07-05 19:13:47', '2024-02-25 07:16:53'),
-(2, 'sup_admin', '$2a$10$.45q.HlDPIiFaaILIMJfHe7YXmqSKqB8AtZXlplDZgWLqTeBszIzu', 'khuzen.ard@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"65d085a3965ff\";s:4:\"name\";s:20:\"Khuzainil Ardiansyah\";}', '::1', '2024-06-25 19:05:35', '2024-02-17 11:08:35', '2024-06-25 17:05:35'),
-(3, 'koor_prod_1', '$2a$10$eeLqCzyr72edDmPQJCZGaeZYUxacMrdpcEFCH2pjRoy0WMPYSgmGC', 'koor_prod_1@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"667a81fab929b\";s:4:\"name\";s:15:\"Koor Produksi 1\";}', '::1', '2024-06-25 19:05:18', '2024-06-25 10:38:18', '2024-06-25 17:05:18'),
-(4, 'user_1', '$2a$10$GSwLKdaLEBUUJTm2kgGH8eyQsE5kI2V3r/4nP3LmHrX.8hX0JgF0i', 'user_1@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"667a825632b66\";s:4:\"name\";s:11:\"Pelanggan 1\";}', '::1', '0000-00-00 00:00:00', '2024-06-25 10:39:50', '2024-06-25 08:40:32'),
-(5, 'koor_pesanan', '$2a$10$XA93IYoHjDIkmaYskwIKYe.vh6FQ.CQPiDSWxH0LzXAgN1aGP3QtC', 'koor_pesanan@gmail.com', 1, 1, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"667ae0640d90d\";s:4:\"name\";s:15:\"Koor Produksi 2\";}', '::1', '0000-00-00 00:00:00', '2024-06-25 17:21:08', '2024-06-25 17:08:37');
+(2, 'sup_admin', '$2a$10$.45q.HlDPIiFaaILIMJfHe7YXmqSKqB8AtZXlplDZgWLqTeBszIzu', 'khuzen.ard@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"65d085a3965ff\";s:4:\"name\";s:20:\"Khuzainil Ardiansyah\";}', '::1', '2024-07-03 17:28:41', '2024-02-17 11:08:35', '2024-07-03 15:28:41'),
+(3, 'koor_prod_1', '$2a$10$eeLqCzyr72edDmPQJCZGaeZYUxacMrdpcEFCH2pjRoy0WMPYSgmGC', 'koor_prod_1@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"667a81fab929b\";s:4:\"name\";s:15:\"Koor Produksi 1\";}', '::1', '0000-00-00 00:00:00', '2024-06-25 10:38:18', '2024-06-25 08:38:18'),
+(4, 'user_1', '$2a$10$GSwLKdaLEBUUJTm2kgGH8eyQsE5kI2V3r/4nP3LmHrX.8hX0JgF0i', 'user_1@gmail.com', 1, 0, NULL, NULL, NULL, NULL, NULL, 1, 'a:2:{s:4:\"foto\";s:13:\"667a825632b66\";s:4:\"name\";s:11:\"Pelanggan 1\";}', '::1', '0000-00-00 00:00:00', '2024-06-25 10:39:50', '2024-06-25 08:40:32');
 
 -- --------------------------------------------------------
 
@@ -456,11 +526,10 @@ CREATE TABLE `user_profiles` (
 --
 
 INSERT INTO `user_profiles` (`id`, `nipeg`, `name`, `gender`, `tanggal_lahir`, `alamat`, `foto`, `modified`) VALUES
-(1, NULL, 'Muhammad Jundi', 'P', '1998-02-17', 'Batam', '62c4714b325a0', '2024-06-25 14:50:08'),
+(1, NULL, 'Muhammad Jundi', 'P', '1998-02-17', 'Batam', '62c4714b325a0', '2024-02-17 10:09:27'),
 (2, NULL, 'Khuzainil Ardiansyah', 'P', '2001-03-09', 'Mampang IV', '65d085a3965ff', '2024-02-17 10:12:45'),
 (3, NULL, 'Koor Produksi 1', '', '0000-00-00', '', '667a81fab929b', '2024-06-25 08:38:18'),
-(4, NULL, 'User 1', 'W', '2024-06-25', 'Makassar', '667a825632b66', '2024-06-25 08:40:32'),
-(5, NULL, 'Koor Pesanan', 'W', '2024-06-26', 'Sleman', '667ae0640d90d', '2024-06-25 17:08:37');
+(4, NULL, 'User 1', 'W', '2024-06-25', 'Makassar', '667a825632b66', '2024-06-25 08:40:32');
 
 -- --------------------------------------------------------
 
@@ -481,8 +550,7 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 (1, 1),
 (2, 3),
 (3, 4),
-(4, 2),
-(5, 6);
+(4, 2);
 
 -- --------------------------------------------------------
 
@@ -551,10 +619,12 @@ CREATE TABLE `view_produk` (
 --
 CREATE TABLE `view_produksi` (
 `id_produksi` int(11)
-,`id_produk` int(128)
+,`id_produk` int(11)
+,`id_pegawai` int(11)
+,`id_pelanggan` int(11)
 ,`produk` varchar(128)
-,`id_pegawai` int(128)
 ,`nama_pegawai` varchar(255)
+,`nama_pelanggan` varchar(128)
 ,`status_pengiriman` enum('Sudah Dikirim','Belum Dikirim')
 ,`target_produksi` int(128)
 ,`barang_ditaro` int(128)
@@ -563,6 +633,21 @@ CREATE TABLE `view_produksi` (
 ,`reject` int(128)
 ,`status` enum('Stok','Kirim')
 ,`production_at` date
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `view_stok_gudangg`
+-- (See below for the actual view)
+--
+CREATE TABLE `view_stok_gudangg` (
+`id_produk` int(11)
+,`id_kategori_produk` int(11)
+,`produk` varchar(128)
+,`harga` varchar(255)
+,`id_stok_gudang` int(11)
+,`stok` int(128)
 );
 
 -- --------------------------------------------------------
@@ -599,7 +684,16 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `view_produksi`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_produksi`  AS SELECT `p`.`id_produksi` AS `id_produksi`, `p`.`id_produk` AS `id_produk`, `pr`.`produk` AS `produk`, `p`.`id_pegawai` AS `id_pegawai`, `up`.`name` AS `nama_pegawai`, `p`.`status_pengiriman` AS `status_pengiriman`, `p`.`target_produksi` AS `target_produksi`, `p`.`barang_ditaro` AS `barang_ditaro`, `p`.`penyok` AS `penyok`, `p`.`packing` AS `packing`, `p`.`reject` AS `reject`, `p`.`status` AS `status`, `p`.`production_at` AS `production_at` FROM ((`tb_produksi` `p` join `tb_produk` `pr` on(`p`.`id_produk` = `pr`.`id_produk`)) join `user_profiles` `up` on(`p`.`id_pegawai` = `up`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_produksi`  AS SELECT `p`.`id_produksi` AS `id_produksi`, `p`.`id_produk` AS `id_produk`, `p`.`id_pegawai` AS `id_pegawai`, `pl`.`id_pelanggan` AS `id_pelanggan`, `pr`.`produk` AS `produk`, `up`.`name` AS `nama_pegawai`, `pl`.`name` AS `nama_pelanggan`, `p`.`status_pengiriman` AS `status_pengiriman`, `p`.`target_produksi` AS `target_produksi`, `p`.`barang_ditaro` AS `barang_ditaro`, `p`.`penyok` AS `penyok`, `p`.`packing` AS `packing`, `p`.`reject` AS `reject`, `p`.`status` AS `status`, `p`.`production_at` AS `production_at` FROM (((`tb_produksi` `p` join `tb_produk` `pr` on(`p`.`id_produk` = `pr`.`id_produk`)) join `user_profiles` `up` on(`p`.`id_pegawai` = `up`.`id`)) join `tb_pelanggan` `pl` on(`p`.`id_pelanggan` = `pl`.`id_pelanggan`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `view_stok_gudangg`
+--
+DROP TABLE IF EXISTS `view_stok_gudangg`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_stok_gudangg`  AS SELECT `p`.`id_produk` AS `id_produk`, `p`.`id_kategori_produk` AS `id_kategori_produk`, `p`.`produk` AS `produk`, `p`.`harga` AS `harga`, `s`.`id_stok_gudang` AS `id_stok_gudang`, ifnull(max(`s`.`stok`),0) AS `stok` FROM (`tb_produk` `p` left join `tb_stok_gudang` `s` on(`p`.`id_produk` = `s`.`produk_id`)) GROUP BY `p`.`id_produk`, `p`.`id_kategori_produk`, `p`.`produk`, `p`.`harga`, `s`.`id_stok_gudang` ;
 
 --
 -- Indexes for dumped tables
@@ -669,7 +763,29 @@ ALTER TABLE `tb_produk`
 -- Indexes for table `tb_produksi`
 --
 ALTER TABLE `tb_produksi`
-  ADD PRIMARY KEY (`id_produksi`);
+  ADD PRIMARY KEY (`id_produksi`),
+  ADD KEY `fk_produk` (`id_produk`);
+
+--
+-- Indexes for table `tb_produk_history`
+--
+ALTER TABLE `tb_produk_history`
+  ADD PRIMARY KEY (`id_history`),
+  ADD KEY `id_produk` (`id_produk`);
+
+--
+-- Indexes for table `tb_stok_gudang`
+--
+ALTER TABLE `tb_stok_gudang`
+  ADD PRIMARY KEY (`id_stok_gudang`),
+  ADD KEY `fk_stok_gudang` (`produk_id`);
+
+--
+-- Indexes for table `tb_stok_produksi`
+--
+ALTER TABLE `tb_stok_produksi`
+  ADD PRIMARY KEY (`id_stok_produksi`),
+  ADD KEY `fk_stok_produksi` (`produk_id`);
 
 --
 -- Indexes for table `users`
@@ -703,19 +819,19 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `permission_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `permission_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `role_id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_kategori_produk`
@@ -739,7 +855,7 @@ ALTER TABLE `tb_pembelian`
 -- AUTO_INCREMENT for table `tb_pesanan`
 --
 ALTER TABLE `tb_pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_produk`
@@ -754,26 +870,68 @@ ALTER TABLE `tb_produksi`
   MODIFY `id_produksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `tb_produk_history`
+--
+ALTER TABLE `tb_produk_history`
+  MODIFY `id_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tb_stok_gudang`
+--
+ALTER TABLE `tb_stok_gudang`
+  MODIFY `id_stok_gudang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tb_stok_produksi`
+--
+ALTER TABLE `tb_stok_produksi`
+  MODIFY `id_stok_produksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tb_produksi`
+--
+ALTER TABLE `tb_produksi`
+  ADD CONSTRAINT `fk_produk` FOREIGN KEY (`id_produk`) REFERENCES `tb_produk` (`id_produk`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tb_produk_history`
+--
+ALTER TABLE `tb_produk_history`
+  ADD CONSTRAINT `tb_produk_history_ibfk_1` FOREIGN KEY (`id_produk`) REFERENCES `tb_produk` (`id_produk`);
+
+--
+-- Constraints for table `tb_stok_gudang`
+--
+ALTER TABLE `tb_stok_gudang`
+  ADD CONSTRAINT `fk_stok_gudang` FOREIGN KEY (`produk_id`) REFERENCES `tb_produk` (`id_produk`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tb_stok_produksi`
+--
+ALTER TABLE `tb_stok_produksi`
+  ADD CONSTRAINT `fk_stok_produksi` FOREIGN KEY (`produk_id`) REFERENCES `tb_produk` (`id_produk`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_profiles`

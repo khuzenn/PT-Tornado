@@ -46,6 +46,10 @@ class Produksi extends CI_Controller
 
 			$this->load->model("Menu_model");
             $this->load->model("Produksi_model");
+
+			$this->load->model("Dashboard_model");
+			$low_stock_items = $this->Dashboard_model->getLowStockItems();
+        	$this->data['low_stock_items'] = $low_stock_items;
 		}
 	}
  
@@ -75,6 +79,7 @@ class Produksi extends CI_Controller
 	{
 		$this->form_validation->set_rules('produk', 'Produk', 'required');
 		$this->form_validation->set_rules('name', 'Pegawai', 'required');
+		$this->form_validation->set_rules('name', 'Pelanggan', 'required');
 		$this->form_validation->set_rules('status_pengiriman', 'Status', 'required');
 		$this->form_validation->set_rules('target_produksi', 'Terget Produksi', 'required');
 		$this->form_validation->set_rules('barang_ditaro', 'Barang Ditaro', 'required');
@@ -85,24 +90,36 @@ class Produksi extends CI_Controller
 
 		if ($this->form_validation->run() == TRUE) {
 
-			$data = array(
-				'id_produk' => decrypt_url($this->input->post('produk')),
-				'id_pegawai' => decrypt_url($this->input->post('name')),
-				'status_pengiriman' => $this->input->post('status_pengiriman'),
-				'target_produksi' => $this->input->post('target_produksi'),
-				'barang_ditaro' => $this->input->post('barang_ditaro'),
-				'penyok' => $this->input->post('penyok'),
-				'reject' => $this->input->post('reject'),
-				'packing' => $this->input->post('packing'),
-				'status' => $this->input->post('status')
-			);
+			$id_produk = decrypt_url($this->input->post('produk'));
+			$barang_ditaro = $this->input->post('barang_ditaro');
 
-			$this->Produksi_model->addProduksi($data);
+			$produk = $this->Produksi_model->get_stok_gudang($id_produk);
 
-			redirect('Produksi');
+			if ($produk->stok < $barang_ditaro) {
+				$this->session->set_flashdata('message', 'Stok produk tidak mencukupi');
+				redirect('Produksi/add');
+			} else {
+				$data = array(
+					'id_produk' => decrypt_url($this->input->post('produk')),
+					'id_pegawai' => decrypt_url($this->input->post('name')),
+					'id_pelanggan' => decrypt_url($this->input->post('name')),
+					'status_pengiriman' => $this->input->post('status_pengiriman'),
+					'target_produksi' => $this->input->post('target_produksi'),
+					'barang_ditaro' => $this->input->post('barang_ditaro'),
+					'penyok' => $this->input->post('penyok'),
+					'reject' => $this->input->post('reject'),
+					'packing' => $this->input->post('packing'),
+					'status' => $this->input->post('status')
+				);
+	
+				$this->Produksi_model->addProduksi($data);
+	
+				redirect('Produksi');
+			}
 		} else {
 			$this->data['selected_produk'] = $this->input->post('produk');
 			$this->data['selected_pegawai'] = $this->input->post('name');
+			$this->data['selected_pelanggan'] = $this->input->post('name');
 			$this->data['status_pengiriman'] = $this->input->post('status_pengiriman');
 			$this->data['target_produksi'] = $this->input->post('target_produksi');
 			$this->data['barang_ditaro'] = $this->input->post('barang_ditaro');
@@ -114,6 +131,7 @@ class Produksi extends CI_Controller
 			$this->data['listProduksi'] = $this->Produksi_model->getAllProduksi();
 			$this->data['list_produk'] = $this->Produksi_model->getAllProduk();
 			$this->data['list_pegawai'] = $this->Produksi_model->getAllPegawai();
+			$this->data['list_pelanggan'] = $this->Produksi_model->getAllPelanggan();
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			$this->data['action'] = site_url('Produksi/add');
@@ -148,6 +166,7 @@ class Produksi extends CI_Controller
     {
         $this->form_validation->set_rules('produk', 'Produk', 'required');
 		$this->form_validation->set_rules('name', 'Pegawai', 'required');
+		$this->form_validation->set_rules('name', 'Pelanggan', 'required');
 		$this->form_validation->set_rules('status_pengiriman', 'Status', 'required');
 		$this->form_validation->set_rules('target_produksi', 'Terget Produksi', 'required');
 		$this->form_validation->set_rules('barang_ditaro', 'Barang Ditaro', 'required');
@@ -162,6 +181,7 @@ class Produksi extends CI_Controller
 			$data = array(
 				'id_produk' => decrypt_url($this->input->post('produk')),
 				'id_pegawai' => decrypt_url($this->input->post('name')),
+				'id_pelanggan' => decrypt_url($this->input->post('name')),
 				'status_pengiriman' => $this->input->post('status_pengiriman'),
 				'target_produksi' => $this->input->post('target_produksi'),
 				'barang_ditaro' => $this->input->post('barang_ditaro'),
@@ -180,6 +200,7 @@ class Produksi extends CI_Controller
 		} else {
 			$this->data['selected_produk'] = $this->input->post('id_produk');
 			$this->data['selected_pegawai'] = $this->input->post('id_pegawai');
+			$this->data['selected_pelanggan'] = $this->input->post('id_pelanggan');
 			$this->data['status_pengiriman'] = $this->input->post('status_pengiriman');
 			$this->data['target_produksi'] = $this->input->post('target_produksi');
 			$this->data['barang_ditaro'] = $this->input->post('barang_ditaro');
@@ -191,12 +212,14 @@ class Produksi extends CI_Controller
 			$this->data['list_produksi'] = $this->Produksi_model->getAllProduksi();
 			$this->data['list_produk'] = $this->Produksi_model->getAllProduk();
 			$this->data['list_pegawai'] = $this->Produksi_model->getAllPegawai();
+			$this->data['list_pelanggan'] = $this->Produksi_model->getAllPelanggan();
 
 			$value_produksi = $this->Produksi_model->getProduksi($id_produksi);
 
 			$this->data['id_produksi'] = $id_produksi;
 			$this->data['selected_produk'] = $value_produksi->id_produk;
 			$this->data['selected_pegawai'] = $value_produksi->id_pegawai;
+			$this->data['selected_pelanggan'] = $value_produksi->id_pelanggan;
 			$this->data['status_pengiriman'] = $value_produksi->status_pengiriman;
 			$this->data['target_produksi'] = $value_produksi->target_produksi;
 			$this->data['barang_ditaro'] = $value_produksi->barang_ditaro;
@@ -233,8 +256,6 @@ class Produksi extends CI_Controller
 			$this->load->view('components/footer');
 		}
     }
-
-
 
 	public function delete($id_produksi)
 	{

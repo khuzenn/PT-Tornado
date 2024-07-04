@@ -29,6 +29,47 @@
           <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
             <div class="container-fluid">
               <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="notifDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fa fa-bell"></i>
+                    <span class="notification"><?= count($low_stock_items) ?></span>
+                  </a>
+                  <ul
+                    class="dropdown-menu notif-box animated fadeIn"
+                    aria-labelledby="notifDropdown"
+                  >
+                    <li>
+                      <div class="dropdown-title">
+                        You have <?= count($low_stock_items) ?> new notification
+                      </div>
+                    </li>
+                    <li>
+                      <div class="notif-scroll scrollbar-outer">
+                        <div class="notif-center">
+                          <?php foreach ($low_stock_items as $item): ?>
+                            <a href="<?= site_url('Stok_Gudang/addStok') ?>">
+                              <div class="notif-icon notif-danger">
+                                <i class="fa fa-exclamation-triangle"></i>
+                              </div>
+                              <div class="notif-content">
+                                <span class="block">Low stock alert: <?= $item->produk ?></span>
+                                <span class="time">Remaining stock: <?= $item->stok ?></span>
+                              </div>
+                            </a>
+                          <?php endforeach; ?>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
                 <li class="nav-item topbar-user dropdown hidden-caret">
                   <a
                     class="dropdown-toggle profile-pic"

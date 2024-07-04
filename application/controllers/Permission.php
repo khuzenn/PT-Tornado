@@ -40,6 +40,10 @@ class Permission extends CI_Controller
 			$this->data['openMenu'] = $this->Showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 
 			$this->load->model("Permission_model");
+
+			$this->load->model("Dashboard_model");
+			$low_stock_items = $this->Dashboard_model->getLowStockItems();
+        	$this->data['low_stock_items'] = $low_stock_items;
 		}
 	}
 

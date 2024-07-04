@@ -36,9 +36,38 @@ class Pesanan_model extends CI_Model
     }
 
     public function addPesanan($data)
-    {
-        $this->db->insert('tb_pesanan', $data);
-    }
+	{
+		$this->db->trans_start();
+
+		$this->db->insert('tb_pesanan', $data);
+
+		$this->db->select('stok');
+		$this->db->from('tb_stok_gudang');
+		$this->db->where('produk_id', $data['id_produk']);
+		$query = $this->db->get();
+		$stok_gudang = $query->row();
+
+		if (!$stok_gudang) {
+			error_log("Stok Gudang not found for produk_id: " . $data['id_produk']);
+			return FALSE;
+		}
+
+		$previous_gudang_stock = $stok_gudang->stok;
+		$new_gudang_stock = $previous_gudang_stock - $data['quantity'];
+
+		if ($new_gudang_stock < 0) {
+			error_log("Insufficient stock for produk_id: " . $data['id_produk'] . ". Current stock: " . $previous_gudang_stock . ", Required: " . $data['quantity']);
+			return FALSE;
+		}
+
+		$this->db->trans_complete();
+
+		if ($this->db->trans_status() === FALSE) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 
 	function updatePesanan($id, $data)
 	{
@@ -85,5 +114,19 @@ class Pesanan_model extends CI_Model
         $query = $this->db->get('tb_pesanan');
         
         return $query->result_array();
+    }
+
+	public function get_produk($id_produk)
+    {
+        $this->db->where('id_produk', $id_produk);
+        $query = $this->db->get('tb_produk');
+        return $query->row();
+    }
+
+	public function get_stok_gudang($id_produk)
+    {
+        $this->db->where('produk_id', $id_produk);
+        $query = $this->db->get('tb_stok_gudang');
+        return $query->row();
     }
 }

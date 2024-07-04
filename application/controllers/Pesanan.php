@@ -47,6 +47,10 @@ class Pesanan extends CI_Controller
 			$this->load->model("Menu_model");
             $this->load->model("Pesanan_model");
             $this->load->helper("rupiah");
+
+			$this->load->model("Dashboard_model");
+			$low_stock_items = $this->Dashboard_model->getLowStockItems();
+        	$this->data['low_stock_items'] = $low_stock_items;
 		}
 	}
  
@@ -121,27 +125,37 @@ class Pesanan extends CI_Controller
 
 		if ($this->form_validation->run() == TRUE) {
 
-			// Hitung total harga
-			$sell_price_total = $this->input->post('quantity') * $this->input->post('sell_price');
+			$id_produk = decrypt_url($this->input->post('produk'));
+			$quantity = $this->input->post('quantity');
 
-			// Hitung unpaid
-			$unpaid = $sell_price_total - $this->input->post('paid');
+			$produk = $this->Pesanan_model->get_stok_gudang($id_produk);
 
-			$data = array(
-				'id_pelanggan' => decrypt_url($this->input->post('name')),
-				'id_produk' => decrypt_url($this->input->post('produk')),
-				'quantity' => $this->input->post('quantity'),
-				'sell_price' => $this->input->post('sell_price'),
-				'paid' => $this->input->post('paid'),
-				'sell_price_total' => str_replace(['.', ','], '', $this->input->post('sell_price_total')),
-				'status' => $this->input->post('status'),
-				'note' => $this->input->post('note'),
-				'unpaid' => $unpaid
-			);
-
-			$this->Pesanan_model->addPesanan($data);
-			
-			redirect('Pesanan');
+			if ($produk->stok < $quantity) {
+				$this->session->set_flashdata('message', 'Stok produk tidak mencukupi');
+				redirect('Pesanan/add');
+			} else {
+				// Hitung total harga
+				$sell_price_total = $this->input->post('quantity') * $this->input->post('sell_price');
+	
+				// Hitung unpaid
+				$unpaid = $sell_price_total - $this->input->post('paid');
+	
+				$data = array(
+					'id_pelanggan' => decrypt_url($this->input->post('name')),
+					'id_produk' => decrypt_url($this->input->post('produk')),
+					'quantity' => $this->input->post('quantity'),
+					'sell_price' => $this->input->post('sell_price'),
+					'paid' => $this->input->post('paid'),
+					'sell_price_total' => str_replace(['.', ','], '', $this->input->post('sell_price_total')),
+					'status' => $this->input->post('status'),
+					'note' => $this->input->post('note'),
+					'unpaid' => $unpaid
+				);
+	
+				$this->Pesanan_model->addPesanan($data);
+				
+				redirect('Pesanan');
+			}
 		} else {
 			$this->data['selected_pelanggan'] = $this->input->post('name');
 			$this->data['selected_produk'] = $this->input->post('produk');
@@ -198,30 +212,40 @@ class Pesanan extends CI_Controller
 
 		if ($this->form_validation->run() == TRUE) {
 
-			// Hitung total harga
-			$sell_price_total = $this->input->post('quantity') * $this->input->post('sell_price');
+			$id_produk = decrypt_url($this->input->post('produk'));
+			$quantity = $this->input->post('quantity');
 
-			// Hitung unpaid
-			$unpaid = $sell_price_total - $this->input->post('paid');
+			$produk = $this->Pesanan_model->get_produk($id_produk);
 
-			$data = array(
-				'id_pelanggan' => decrypt_url($this->input->post('name')),
-				'id_produk' => decrypt_url($this->input->post('produk')),
-				'quantity' => $this->input->post('quantity'),
-				'sell_price' => $this->input->post('sell_price'),
-				'paid' => $this->input->post('paid'),
-				'sell_price_total' => str_replace(['.', ','], '', $this->input->post('sell_price_total')),
-				'status' => $this->input->post('status'),
-				'note' => $this->input->post('note'),
-				'unpaid' => $unpaid
-			);
-
-			$result = $this->Pesanan_model->updatePesanan($id, $data);
-
-			if ($result) {
-				$this->session->set_flashdata('msg', 'Anda berhasil menyunting data produk');
-
-				redirect('pesanan');
+			if ($produk->stok < $quantity) {
+				$this->session->set_flashdata('message', 'Stok produk tidak mencukupi');
+				redirect('Pesanan/add');
+			} else {
+				// Hitung total harga
+				$sell_price_total = $this->input->post('quantity') * $this->input->post('sell_price');
+	
+				// Hitung unpaid
+				$unpaid = $sell_price_total - $this->input->post('paid');
+	
+				$data = array(
+					'id_pelanggan' => decrypt_url($this->input->post('name')),
+					'id_produk' => decrypt_url($this->input->post('produk')),
+					'quantity' => $this->input->post('quantity'),
+					'sell_price' => $this->input->post('sell_price'),
+					'paid' => $this->input->post('paid'),
+					'sell_price_total' => str_replace(['.', ','], '', $this->input->post('sell_price_total')),
+					'status' => $this->input->post('status'),
+					'note' => $this->input->post('note'),
+					'unpaid' => $unpaid
+				);
+	
+				$result = $this->Pesanan_model->updatePesanan($id, $data);
+	
+				if ($result) {
+					$this->session->set_flashdata('msg', 'Anda berhasil menyunting data produk');
+	
+					redirect('pesanan');
+				}
 			}
 		} else {
 			$this->data['selected_pelanggan'] = $this->input->post('id_pelanggan');
@@ -295,4 +319,22 @@ class Pesanan extends CI_Controller
         
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+	public function get_harga() {
+		$id_produk = $this->input->post('id_produk');
+
+		if (!$id_produk) {
+			echo json_encode(['status' => 'error', 'message' => 'ID produk tidak valid']);
+			return;
+		}
+
+		$id_produk = decrypt_url($id_produk);
+		$produk = $this->Pesanan_model->get_produk($id_produk);
+
+		if ($produk) {
+			echo json_encode(['status' => 'success', 'harga' => $produk->harga]);
+		} else {
+			echo json_encode(['status' => 'error', 'message' => 'Produk tidak ditemukan']);
+		}
+	}
 }

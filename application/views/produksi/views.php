@@ -1,7 +1,7 @@
 <div class="container">
   <div class="page-inner">
     <div class="page-header">
-      <h3 class="fw-bold mb-3">Pesanan</h3>
+      <h3 class="fw-bold mb-3">Produksi</h3>
         <ul class="breadcrumbs mb-3">
           <li class="nav-home">
             <a href="<?= base_url("Dashboard") ?>">
@@ -22,7 +22,7 @@
           <div class="card-header d-flex justify-content-between">
             <div class="card-title">Daftar Produksi</div>
             <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
-              <div>
+              <div class="col-12 col-sm-auto d-flex justify-content-end">
                 <a href="#" onclick="exportToExcel('kt-tabel', 'Daftar Produksi')">
                     <button class="btn btn-outline-primary btn-round justify-content-center" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                         <i class="fas fa-file-export me-sm-1 pb-1"></i>
@@ -30,16 +30,15 @@
                     </button>
                 </a>
               </div>
-              <div>
+              <div class="col-12 col-sm-auto">
                 <input type="date" id="min" class="form-control">
               </div>
-              <div>
-                <p class="pt-2">To :</p>
+              <div class="col-12 col-sm-auto">
+                <p class="text-center mb-0">To :</p>
               </div>
-              <div>
+              <div class="col-12 col-sm-auto">
                 <input type="date" id="max" class="form-control">
               </div>
-
             </div>
           </div>
           <div class="card-body">
@@ -81,7 +80,7 @@
                                 <a class="dropdown-item" href="<?= site_url('Produksi/update/' . $produksi->id_produksi); ?>"
                                     ><i class="bx bx-edit-alt me-1"></i> Edit</a
                                 >
-                                <a class="dropdown-item" href="<?= site_url('Produksi/delete/' . $produksi->id_produksi); ?>"
+                                <a class="dropdown-item" href="<?= site_url('Produksi/delete/' . $produksi->id_produksi); ?>" onclick="return confirm('Are You Sure Want to Delete This Data?')"
                                     ><i class="bx bx-trash-alt me-1"></i> Hapus</a
                                 >
                             </div>

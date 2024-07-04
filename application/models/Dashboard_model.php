@@ -140,4 +140,14 @@ class Dashboard_model extends CI_Model
         return ['labels' => $labels, 'data' => $data];
     }
     
+    public function getLowStockItems($threshold = 500)
+    {
+        $this->db->select('p.produk, s.stok');
+        $this->db->from('tb_produk p');
+        $this->db->join('tb_stok_gudang s', 'p.id_produk = s.produk_id', 'left');
+        $this->db->where('s.stok <=', $threshold);
+        $query = $this->db->get();
+        
+        return $query->result();
+    }
 }

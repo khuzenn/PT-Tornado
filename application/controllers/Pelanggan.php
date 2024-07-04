@@ -46,6 +46,10 @@ class Pelanggan extends CI_Controller
 
 			$this->load->model("Menu_model");
             $this->load->model("Pelanggan_model");
+
+			$this->load->model("Dashboard_model");
+			$low_stock_items = $this->Dashboard_model->getLowStockItems();
+        	$this->data['low_stock_items'] = $low_stock_items;
 		}
 	}
  
@@ -62,7 +66,7 @@ class Pelanggan extends CI_Controller
 			'href' => site_url('Pelanggan')
 		];
 
-        $this->data['listPelanggan'] = $this->Pelanggan_model->getAllPelanggan(); 
+        $this->data['listPelanggan'] = $this->Pelanggan_model->getAllPelanggan();
 
 		$this->load->view('components/header', $this->data);
 		$this->load->view('components/sidebar', $this->data);
@@ -86,6 +90,11 @@ class Pelanggan extends CI_Controller
 
         $detail_pelanggan = $this->Pelanggan_model->getDetailPelanggan($id_pelanggan);
 
+		if (empty($detail_pelanggan->order_date) || empty($detail_pelanggan->quantity)) {
+            $this->session->set_flashdata('alert', 'Pelanggan belum melakukan pemesanan.');
+            redirect('Pelanggan');
+        }
+
         $this->data['name'] = $detail_pelanggan->name;
         $this->data['address'] = $detail_pelanggan->address;
         $this->data['phone'] = $detail_pelanggan->phone;
@@ -94,7 +103,7 @@ class Pelanggan extends CI_Controller
         $this->data['quantity'] = $detail_pelanggan->quantity;
 
 		$this->load->view('components/header', $this->data);
-		$this->load->view('components/sidebar', $this->data);
+		$this->load->view('components/sidebar', $this->data); 
 		$this->load->view('components/navbar', $this->data);
 		$this->load->view('pelanggan/detail', $this->data);
 		$this->load->view('components/footer', $this->data);

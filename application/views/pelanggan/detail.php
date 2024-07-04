@@ -25,7 +25,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <div class="card-header d-flex justify-content-between">
+          <div class="card-header d-flex justify-content-between"> 
             <div class="card-title">Daftar Pelanggan</div>
             <a href="<?= base_url("Pelanggan") ?>"><i class="icon-close" style="font-size: 2rem; color: red; padding-top: 2px;"></i></a>
           </div>

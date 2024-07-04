@@ -46,6 +46,10 @@ class Kategori_Produk extends CI_Controller
 
 			$this->load->model("Menu_model");
             $this->load->model("Kategori_produk_model");
+
+			$this->load->model("Dashboard_model");
+			$low_stock_items = $this->Dashboard_model->getLowStockItems();
+        	$this->data['low_stock_items'] = $low_stock_items;
 		}
 	}
  

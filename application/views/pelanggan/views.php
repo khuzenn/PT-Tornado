@@ -18,6 +18,12 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
+        <?php if ($this->session->flashdata('alert')): ?>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <?= $this->session->flashdata('alert'); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
         <div class="card">
           <div class="card-header d-flex justify-content-between">
             <div class="card-title">Daftar Pelanggan</div>
@@ -48,6 +54,7 @@
                   <?php
                   $no = 1;
                   foreach ($listPelanggan->result() as $pelanggan) {
+                    $noOrders = empty($pelanggan->order_date) || empty($pelanggan->quantity);
                   ?>
                   <tr>
                     <td class="text-center"><?= $no; ?></td>
@@ -66,7 +73,7 @@
                             <a class="dropdown-item" href="<?= site_url('Pelanggan/update/' . $pelanggan->id_pelanggan); ?>"
                                 ><i class="bx bx-edit-alt me-1"></i> Edit</a
                             >
-                            <a class="dropdown-item" href="<?= site_url('Pelanggan/delete/' . $pelanggan->id_pelanggan); ?>"
+                            <a class="dropdown-item" href="<?= site_url('Pelanggan/delete/' . $pelanggan->id_pelanggan); ?>" onclick="return confirm('Are You Sure Want to Delete This Data?')"
                                 ><i class="bx bx-trash-alt me-1"></i> Hapus</a
                             >
                         </div>

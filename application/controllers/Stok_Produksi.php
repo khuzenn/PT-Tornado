@@ -1,14 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller
+class Stok_Produksi extends CI_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->load->library('tank_auth');
-		$this->load->helper('rupiah');
 		
 
 		if (!$this->tank_auth->is_logged_in()) {
@@ -31,11 +30,11 @@ class Dashboard extends CI_Controller
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Dashboard';
+			$this->data['link_active'] = 'Stok_Produksi';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
-				redirect('Dashboard');
+				redirect('Stok_Produksi');
 			}
 
 			$this->load->model("Showmenu_model");
@@ -46,8 +45,9 @@ class Dashboard extends CI_Controller
 			$this->data['openMenu'] = $this->Showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 
 			$this->load->model("Menu_model");
+			$this->load->model("Stok_produksi_model");
 
-            $this->load->model("Dashboard_model");
+			$this->load->model("Dashboard_model");
 			$low_stock_items = $this->Dashboard_model->getLowStockItems();
         	$this->data['low_stock_items'] = $low_stock_items;
 		}
@@ -55,31 +55,12 @@ class Dashboard extends CI_Controller
  
 	public function index()
 	{
-		$this->data['total_pendapatan'] = $this->Dashboard_model->getAllPendapatan();
-		$this->data['unpaid'] = $this->Dashboard_model->getAllPiutang();
-		$this->data['hutang'] = $this->Dashboard_model->getAllHutang();
-		$this->data['total_pesanan'] = $this->Dashboard_model->getAllPesanan();
-
-		$this->data['chart_total_pesanan'] = $this->Dashboard_model->getMonthlySales();
-		$this->data['chart_total_hutang'] = $this->Dashboard_model->getMonthlyHutang();
-		$this->data['chart_total_piutang'] = $this->Dashboard_model->getMonthlyPiutang();
-		$this->data['chart_jumlah_pesanan'] = $this->Dashboard_model->getMonthlyPesanan();
-
-		$this->data['title'] = 'Dashboard';
-
-		$this->data['breadcrumbs'] = [];
-
-		$this->data['breadcrumbs'][] = [
-			'active' => FALSE,
-			'text' => 'Dashboard',
-			'class' => 'breadcrumb-item pe-3 text-gray-400',
-			'href' => site_url('Dashboard')
-		];
+		$this->data['list_produk'] = $this->Stok_produksi_model->getAllProduk();
 
 		$this->load->view('components/header', $this->data);
 		$this->load->view('components/sidebar', $this->data);
 		$this->load->view('components/navbar', $this->data);
-		$this->load->view('welcome_message', $this->data);
+		$this->load->view('stok_produk/stok_produksi', $this->data);
 		$this->load->view('components/footer', $this->data);
 	}
 }

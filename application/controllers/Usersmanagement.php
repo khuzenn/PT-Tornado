@@ -6,7 +6,7 @@ class Usersmanagement extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->library('tank_auth');
+		$this->load->library(array('tank_auth', 'upload'));
 
 		if (!$this->tank_auth->is_logged_in()) {
 			redirect('/auth/login/');
@@ -40,6 +40,10 @@ class Usersmanagement extends CI_Controller
 			$this->data['openMenu'] = $this->Showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 
 			$this->load->model("Usersmanagement_model");
+
+			$this->load->model("Dashboard_model");
+			$low_stock_items = $this->Dashboard_model->getLowStockItems();
+        	$this->data['low_stock_items'] = $low_stock_items;
 		}
 	}
 
@@ -70,9 +74,9 @@ class Usersmanagement extends CI_Controller
 		$this->load->view('components/footer');
 	}
 
-	function add()
-	{
-		$this->data['title'] = "Pengaturan Pengguna";
+	public function add()
+    {
+        $this->data['title'] = "Pengaturan Pengguna";
 
 		$this->data['breadcrumbs'] = [];
 
@@ -217,7 +221,7 @@ class Usersmanagement extends CI_Controller
 			$this->load->view('usersmanagement/form_register', $this->data);
 			$this->load->view('components/footer');
 		// }
-	}
+    }
 
 	function update($id)
 	{

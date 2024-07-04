@@ -29,6 +29,12 @@
                         <div class="card-title">Tambah Produksi</div>
                     </div>
                     <div class="card-body">
+                        <?php if ($this->session->flashdata('message')): ?>
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <?= $this->session->flashdata('message'); ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
                         <form class="form-horizontal" role="form" action="<?= $action; ?>" method="POST">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="produk">Produk</label>
@@ -52,6 +58,20 @@
                                         <?php foreach ($list_pegawai as $pegawai): ?>
                                             <option value="<?= encrypt_url($pegawai->id); ?>" <?= ($pegawai->id == $selected_pegawai) ? 'selected' : ''; ?>>
                                                 <?= $pegawai->name; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <span style="color: red;"><?= form_error('pegawai'); ?></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="name">Pelanggan</label>
+                                <div class="col-sm-10">
+                                    <select name="name" id="name" class="form-select form-control" data-placeholder="Pilih Pelanggan . . .">
+                                        <option value="">Pilih Pelanggan</option>
+                                        <?php foreach ($list_pelanggan as $pelanggan): ?>
+                                            <option value="<?= encrypt_url($pelanggan->id_pelanggan); ?>" <?= ($pelanggan->id_pelanggan == $selected_pelanggan) ? 'selected' : ''; ?>>
+                                                <?= $pelanggan->name; ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>

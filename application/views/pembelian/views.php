@@ -22,7 +22,7 @@
           <div class="card-header d-flex justify-content-between">
             <div class="card-title">Daftar Pembelian</div>
             <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
-              <div>
+              <div class="col-12 col-sm-auto d-flex justify-content-end">
                 <a href="#" onclick="exportToExcel('kt-tabel', 'Daftar Pembelian')">
                     <button class="btn btn-outline-primary btn-round justify-content-center" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                         <i class="fas fa-file-export me-sm-1 pb-1"></i>
@@ -30,16 +30,15 @@
                     </button>
                 </a>
               </div>
-              <div>
+              <div class="col-12 col-sm-auto">
                 <input type="date" id="min" class="form-control">
               </div>
-              <div>
-                <p class="pt-2">To :</p>
+              <div class="col-12 col-sm-auto">
+                <p class="text-center mb-0">To :</p>
               </div>
-              <div>
+              <div class="col-12 col-sm-auto">
                 <input type="date" id="max" class="form-control">
               </div>
-
             </div>
           </div>
           <div class="card-body">
@@ -78,7 +77,7 @@
                               <a class="dropdown-item" href="<?= site_url('Pembelian/update/' . $pembelian->id_pembelian); ?>"
                                   ><i class="bx bx-edit-alt me-1"></i> Edit</a
                               >
-                              <a class="dropdown-item" href="<?= site_url('Pembelian/delete/' . $pembelian->id_pembelian); ?>"
+                              <a class="dropdown-item" href="<?= site_url('Pembelian/delete/' . $pembelian->id_pembelian); ?>" onclick="return confirm('Are You Sure Want to Delete This Data?')"
                                   ><i class="bx bx-trash-alt me-1"></i> Hapus</a
                               >
                           </div>
